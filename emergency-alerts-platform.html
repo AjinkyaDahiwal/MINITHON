@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Alerts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #FFF5E6;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #FF8C00;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #alert-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            color: #FF8C00;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .alert-content {
+            flex-grow: 1;
+        }
+
+        .alert-high {
+            background-color: #FFEBEE;
+            border-left: 5px solid #F44336;
+        }
+
+        .alert-medium {
+            background-color: #FFF8E1;
+            border-left: 5px solid #FFC107;
+        }
+
+        .alert-low {
+            background-color: #E8F5E9;
+            border-left: 5px solid #4CAF50;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #FF8C00;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #FFA500;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #last-updated {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>City Emergency Alerts</h1>
+
+        <div id="alert-section">
+            <button id="alert-button">View Emergency Alerts</button>
+        </div>
+
+        <div id="alert-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Current Emergency Alerts</h2>
+                <div id="alerts-container"></div>
+                <p id="last-updated"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const alerts = [
+            {
+                priority: "High",
+                location: "Central Park",
+                time: "2024-09-20 14:30",
+                description: "Fire outbreak in Central Park. Emergency services are on the scene. Please avoid the area."
+            },
+            {
+                priority: "Medium",
+                location: "Downtown",
+                time: "2024-09-20 14:45",
+                description: "Heavy traffic congestion reported in Downtown due to a multi-vehicle accident. Expect delays and use alternate routes if possible."
+            },
+            {
+                priority: "Low",
+                location: "East Side",
+                time: "2024-09-20 15:00",
+                description: "Scheduled water supply interruption in East Side for maintenance. Service expected to resume by 18:00."
+            }
+        ];
+
+        const alertButton = document.getElementById('alert-button');
+        const modal = document.getElementById('alert-modal');
+        const closeButton = document.querySelector('.close-button');
+        const lastUpdated = document.getElementById('last-updated');
+
+        function getAlertIcon(priority) {
+            switch(priority) {
+                case "High": return "🚨";
+                case "Medium": return "⚠️";
+                case "Low": return "ℹ️";
+                default: return "📢";
+            }
+        }
+
+        alertButton.addEventListener('click', function() {
+            const alertsContainer = document.getElementById('alerts-container');
+            alertsContainer.innerHTML = '';
+
+            alerts.sort((a, b) => {
+                const priorityOrder = { "High": 1, "Medium": 2, "Low": 3 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+
+            alerts.forEach(alert => {
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', `alert-${alert.priority.toLowerCase()}`);
+                alertDiv.innerHTML = `
+                    <div class="alert-icon">${getAlertIcon(alert.priority)}</div>
+                    <div class="alert-content">
+                        <strong>${alert.priority} Priority</strong><br>
+                        <strong>Location:</strong> ${alert.location}<br>
+                        <strong>Time:</strong> ${alert.time}<br>
+                        <strong>Description:</strong> ${alert.description}
+                    </div>
+                `;
+                alertsContainer.appendChild(alertDiv);
+            });
+
+            lastUpdated.textContent = `Last updated: ${new Date().toLocaleString()}`;
+            modal.style.display = "block";
+        });
+
+        closeButton.addEventListener('click', function() {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

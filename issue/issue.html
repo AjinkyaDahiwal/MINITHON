@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City Platform - Issue Reporting</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        
+        :root {
+            --primary-color: #FF7F50;
+            --primary-light: #FFD700;
+            --secondary-color: #FF8C00;
+            --text-color: #333;
+            --background-color: #FFF5E6;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: var(--secondary-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        #issuesList {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .issue {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .issue:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .issue h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8em;
+        }
+
+        .pending {
+            background-color: #FFF0B3;
+            color: #996600;
+        }
+
+        .in-progress {
+            background-color: #B3E0FF;
+            color: #006699;
+        }
+
+        .resolved {
+            background-color: #C6E9C6;
+            color: #2D6A2D;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            h1, h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Report an Issue</h1>
+        <form id="issueForm">
+            <label for="issueTitle">Issue Title:</label>
+            <input type="text" id="issueTitle" required>
+
+            <label for="issueDescription">Description:</label>
+            <textarea id="issueDescription" rows="4" required></textarea>
+
+            <label for="issueLocation">Location:</label>
+            <input type="text" id="issueLocation" required>
+
+            <label for="issueCategory">Category:</label>
+            <select id="issueCategory" required>
+                <option value="">Select a category</option>
+                <option value="roads">Roads</option>
+                <option value="utilities">Utilities</option>
+                <option value="parks">Parks</option>
+                <option value="public_safety">Public Safety</option>
+                <option value="other">Other</option>
+            </select>
+
+            <button type="submit">Submit Issue</button>
+        </form>
+
+        <h2>Reported Issues</h2>
+        <div id="issuesList"></div>
+    </div>
+
+    <script>
+        let issues = JSON.parse(localStorage.getItem('issues')) || [];
+
+function displayIssues() {
+    const issuesList = document.getElementById('issuesList');
+    issuesList.innerHTML = '';
+    issues.forEach((issue, index) => {
+        const issueDiv = document.createElement('div');
+        issueDiv.className = 'issue';
+        issueDiv.innerHTML = `
+            <h3>${issue.title}</h3>
+            <p><strong>Description:</strong> ${issue.description}</p>
+            <p><strong>Location:</strong> ${issue.location}</p>
+            <p><strong>Category:</strong> ${issue.category}</p>
+            <p><strong>Status:</strong> <span class="status ${issue.status.toLowerCase().replace(' ', '-')}">${issue.status}</span></p>
+            <div style="border-top: 2px solid #ccc; margin-top: 10px; padding-top: 10px; position: relative;">
+                <span style="position: absolute; right: 0; top: -10px; background-color: white; padding: 0 5px;">Admin</span>
+                <button onclick="updateStatus(${index})">Update Status</button>
+                <button onclick="deleteIssue(${index})" style="background-color: red; margin-left: 10px;">Delete Issue</button>
+            </div>
+        `;
+        issuesList.appendChild(issueDiv);
+    });
+}
+    
+        document.getElementById('issueForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newIssue = {
+                title: document.getElementById('issueTitle').value,
+                description: document.getElementById('issueDescription').value,
+                location: document.getElementById('issueLocation').value,
+                category: document.getElementById('issueCategory').value,
+                status: 'Pending',
+                dateReported: new Date().toLocaleString()
+            };
+            issues.push(newIssue);
+            localStorage.setItem('issues', JSON.stringify(issues));
+            this.reset();
+            displayIssues();
+        });
+    
+        function updateStatus(index) {
+            const statuses = ['Pending', 'In Progress', 'Resolved'];
+            const currentStatusIndex = statuses.indexOf(issues[index].status);
+            issues[index].status = statuses[(currentStatusIndex + 1) % statuses.length];
+            localStorage.setItem('issues', JSON.stringify(issues));
+            displayIssues();
+        }
+    
+        function deleteIssue(index) {
+            issues.splice(index, 1); // Remove the issue from the array
+            localStorage.setItem('issues', JSON.stringify(issues)); // Update localStorage
+            displayIssues(); // Refresh the list
+        }
+    
+        displayIssues();
+    </script>
+    
+</body>
+</html>

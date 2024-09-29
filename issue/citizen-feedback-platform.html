@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Project Feedback Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff9933;
+            --secondary-color: #ffd699;
+            --background-color: #fff9f0;
+            --text-color: #333;
+            --shadow-color: rgba(255, 153, 51, 0.2);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+        form {
+            display: grid;
+            gap: 15px;
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--shadow-color);
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            background-color: #e68a00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        .feedback {
+            background-color: #fff;
+            border: 1px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+        .feedback:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+        .feedback h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.4em;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending { background-color: #ffd699; color: #8a5700; }
+        .status-in-progress { background-color: #99ccff; color: #004085; }
+        .status-resolved { background-color: #99ff99; color: #006100; }
+        .admin-section {
+            border-top: 2px dashed var(--primary-color);
+            margin-top: 15px;
+            padding-top: 15px;
+            position: relative;
+        }
+        .admin-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: white;
+            padding: 0 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 0.9em;
+            border-radius: 10px;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-city icon"></i>City Project Feedback</h1>
+        <form id="feedbackForm">
+            <input type="text" id="projectTitle" placeholder="Project Title" required>
+            <textarea id="feedbackDescription" placeholder="Your Feedback" required></textarea>
+            <select id="projectCategory" required>
+                <option value="">Select Category</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Environment">Environment</option>
+                <option value="Public Services">Public Services</option>
+                <option value="Community Events">Community Events</option>
+            </select>
+            <button type="submit"><i class="fas fa-paper-plane icon"></i>Submit Feedback</button>
+        </form>
+        <div id="feedbackList"></div>
+    </div>
+
+    <script>
+        let feedbacks = JSON.parse(localStorage.getItem('cityFeedbacks')) || [];
+
+        function displayFeedbacks() {
+            const feedbackList = document.getElementById('feedbackList');
+            feedbackList.innerHTML = '';
+            feedbacks.forEach((feedback, index) => {
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.innerHTML = `
+                    <h3><i class="fas fa-project-diagram icon"></i>${feedback.projectTitle}</h3>
+                    <p><strong><i class="fas fa-comment icon"></i>Feedback:</strong> ${feedback.description}</p>
+                    <p><strong><i class="fas fa-tag icon"></i>Category:</strong> ${feedback.category}</p>
+                    <p><strong><i class="fas fa-info-circle icon"></i>Status:</strong> <span class="status status-${feedback.status.toLowerCase().replace(' ', '-')}">${feedback.status}</span></p>
+                    <div class="admin-section">
+                        <span class="admin-label"><i class="fas fa-user-shield icon"></i>Admin</span>
+                        <button onclick="updateStatus(${index})"><i class="fas fa-sync-alt icon"></i>Update Status</button>
+                        <button onclick="deleteFeedback(${index})" style="background-color: #ff6666;"><i class="fas fa-trash-alt icon"></i>Delete</button>
+                    </div>
+                `;
+                feedbackList.appendChild(feedbackDiv);
+            });
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newFeedback = {
+                projectTitle: document.getElementById('projectTitle').value,
+                description: document.getElementById('feedbackDescription').value,
+                category: document.getElementById('projectCategory').value,
+                status: 'Pending',
+                dateSubmitted: new Date().toLocaleString()
+            };
+            feedbacks.push(newFeedback);
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            this.reset();
+            displayFeedbacks();
+        });
+
+        function updateStatus(index) {
+            const statuses = ['Pending', 'In Progress', 'Resolved'];
+            const currentStatusIndex = statuses.indexOf(feedbacks[index].status);
+            feedbacks[index].status = statuses[(currentStatusIndex + 1) % statuses.length];
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            displayFeedbacks();
+        }
+
+        function deleteFeedback(index) {
+            feedbacks.splice(index, 1);
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            displayFeedbacks();
+        }
+
+        displayFeedbacks();
+    </script>
+</body>
+</html>

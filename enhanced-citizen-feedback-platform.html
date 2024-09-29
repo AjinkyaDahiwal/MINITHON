@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CitizenVoice: City Project Feedback Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF8C00;
+            --secondary-color: #FFA500;
+            --background-color: #FFF5E6;
+            --text-color: #333;
+            --shadow-color: rgba(255, 140, 0, 0.2);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+  :root {
+    --primary-color: #FFA07A; /* Light Salmon */
+    --secondary-color: #FF8C00; /* Dark Orange */
+    --background-color: #FFF5EE; /* Seashell */
+    --text-color: #333333;
+    --hover-color: #FF7F50; /* Coral */
+    --icon-color: #FF6347; /* Tomato */
+  }
+
+  .site-footer {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 50px 0 20px;
+    font-family: 'Poppins', sans-serif;
+    border-top: 4px solid var(--primary-color);
+  }
+
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .footer-section {
+    flex: 1;
+    margin: 0 15px 20px;
+    min-width: 200px;
+  }
+
+  .footer-section h3 {
+    color: var(--secondary-color);
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 10px;
+  }
+
+  .footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+  }
+
+  .footer-section:hover h3::after {
+    width: 100%;
+  }
+
+  .footer-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  .footer-section ul li:hover {
+    transform: translateX(5px);
+  }
+
+  .footer-section a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 16px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-section a:hover {
+    color: var(--primary-color);
+  }
+
+  .footer-section a i {
+    color: var(--icon-color);
+    margin-right: 10px;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+
+  .footer-section a:hover i {
+    color: var(--primary-color);
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 20px;
+  }
+
+  .social-links a:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .visitor-count {
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-size: 18px;
+  }
+
+  .newsletter-form {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .newsletter-form input[type="email"] {
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(255, 160, 122, 0.2);
+  }
+
+  .newsletter-form button {
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-form button:hover {
+    background-color: var(--hover-color);
+  }
+
+        #back-button {
+    background-color: #FF5F38; /* Green */
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  #back-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+  }
+  
+  #back-button:active {
+    transform: translateY(1px);
+  }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+        form {
+            display: grid;
+            gap: 15px;
+            background-color: var(--background-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--shadow-color);
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        .feedback {
+            background-color: #fff;
+            border: 1px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+        .feedback:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+        .feedback h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.4em;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending { background-color: #FFD700; color: #8B4513; }
+        .status-in-progress { background-color: #87CEEB; color: #4682B4; }
+        .status-resolved { background-color: #90EE90; color: #006400; }
+        .admin-section {
+            border-top: 2px dashed var(--primary-color);
+            margin-top: 15px;
+            padding-top: 15px;
+            position: relative;
+        }
+        .admin-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: white;
+            padding: 0 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 0.9em;
+            border-radius: 10px;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        .vote-section {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .vote-btn {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 5px;
+            color: var(--primary-color);
+        }
+        .vote-count {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .filter-sort {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .filter-sort select {
+            width: auto;
+            padding: 8px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+
+
+        <h1><i class="fas fa-city icon"></i>CitizenVoice: Project Feedback</h1>
+        <form id="feedbackForm">
+            <input type="text" id="projectTitle" placeholder="Project Title" required>
+            <textarea id="feedbackDescription" placeholder="Your Feedback" required></textarea>
+            <select id="projectCategory" required>
+                <option value="">Select Category</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Environment">Environment</option>
+                <option value="Public Services">Public Services</option>
+                <option value="Community Events">Community Events</option>
+                <option value="Smart City Initiatives">Smart City Initiatives</option>
+            </select>
+            <button type="submit"><i class="fas fa-paper-plane icon"></i>Submit Feedback</button>
+        </form>
+        <div class="filter-sort">
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="Environment">Environment</option>
+                <option value="Public Services">Public Services</option>
+                <option value="Community Events">Community Events</option>
+                <option value="Smart City Initiatives">Smart City Initiatives</option>
+            </select>
+            <select id="sortOption">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="mostVotes">Most Votes</option>
+            </select>
+        </div>
+        <div id="feedbackList"></div>
+    </div>
+    <footer class="site-footer">
+        <div class="footer-container">
+          <div class="footer-section">
+            <h3><i class="fas fa-cogs"></i> Smart Services</h3>
+            <ul>
+              <li><a href="#"><i class="fas fa-tachometer-alt"></i> City Dashboard</a></li>
+              <li><a href="#"><i class="fas fa-exclamation-circle"></i> Report an Issue</a></li>
+              <li><a href="#"><i class="fas fa-bell"></i> Emergency Alerts</a></li>
+              <li><a href="#"><i class="fas fa-calendar-alt"></i> Community Events</a></li>
+              <li><a href="#"><i class="fas fa-traffic-light"></i> Traffic Updates</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3><i class="fas fa-user-friends"></i> Citizen Resources</h3>
+            <ul>
+              <li><a href="#"><i class="fas fa-database"></i> Open Data Portal</a></li>
+              <li><a href="#"><i class="fas fa-chart-pie"></i> City Budget</a></li>
+              <li><a href="#"><i class="fas fa-hands-helping"></i> Volunteer</a></li>
+              <li><a href="#"><i class="fas fa-leaf"></i> Sustainability</a></li>
+              <li><a href="#"><i class="fas fa-bus"></i> Public Transport</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3><i class="fas fa-info-circle"></i> About Us</h3>
+            <ul>
+              <li><a href="#"><i class="fas fa-eye"></i> City Vision</a></li>
+              <li><a href="#"><i class="fas fa-users-cog"></i> Leadership</a></li>
+              <li><a href="#"><i class="fas fa-briefcase"></i> Careers</a></li>
+              <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+              <li><a href="#"><i class="fas fa-universal-access"></i> Accessibility</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3><i class="fas fa-envelope"></i> Stay Connected</h3>
+            <p style="font-size: 16px; margin-bottom: 15px;">Get updates on city initiatives and events</p>
+            <form class="newsletter-form">
+              <input type="email" placeholder="Enter your email">
+              <button type="submit">Subscribe</button>
+            </form>
+            <h3><i class="fas fa-share-alt"></i> Follow Us</h3>
+            <div class="social-links">
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="visitor-count"><i class="fas fa-users"></i> Visitors: 463,977</p>
+          <p>&copy; 2024 SmartCity Hub. All rights reserved.</p>
+        </div>
+      </footer>
+      
+    <script>
+        let feedbacks = JSON.parse(localStorage.getItem('cityFeedbacks')) || [];
+
+        function displayFeedbacks() {
+            const feedbackList = document.getElementById('feedbackList');
+            feedbackList.innerHTML = '';
+            
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortOption = document.getElementById('sortOption').value;
+            
+            gsap.from(".category", { 
+    duration: 0.5, 
+    opacity: 0, 
+    y: 20, 
+    stagger: 0.2 
+});
+
+
+
+            let filteredFeedbacks = feedbacks;
+            if (categoryFilter) {
+                filteredFeedbacks = filteredFeedbacks.filter(f => f.category === categoryFilter);
+            }
+            
+            switch(sortOption) {
+                case 'oldest':
+                    filteredFeedbacks.sort((a, b) => new Date(a.dateSubmitted) - new Date(b.dateSubmitted));
+                    break;
+                case 'mostVotes':
+                    filteredFeedbacks.sort((a, b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+                    break;
+                default:
+                    filteredFeedbacks.sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted));
+            }
+            
+            filteredFeedbacks.forEach((feedback, index) => {
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.innerHTML = `
+                    <h3><i class="fas fa-project-diagram icon"></i>${feedback.projectTitle}</h3>
+                    <p><strong><i class="fas fa-comment icon"></i>Feedback:</strong> ${feedback.description}</p>
+                    <p><strong><i class="fas fa-tag icon"></i>Category:</strong> ${feedback.category}</p>
+                    <p><strong><i class="fas fa-calendar icon"></i>Submitted:</strong> ${feedback.dateSubmitted}</p>
+                    <p><strong><i class="fas fa-info-circle icon"></i>Status:</strong> <span class="status status-${feedback.status.toLowerCase().replace(' ', '-')}">${feedback.status}</span></p>
+                    <div class="vote-section">
+                        <button class="vote-btn" onclick="vote(${index}, 'up')"><i class="fas fa-thumbs-up"></i></button>
+                        <span class="vote-count">${feedback.upvotes - feedback.downvotes}</span>
+                        <button class="vote-btn" onclick="vote(${index}, 'down')"><i class="fas fa-thumbs-down"></i></button>
+                    </div>
+                    <div class="admin-section">
+                        <span class="admin-label"><i class="fas fa-user-shield icon"></i>Admin</span>
+                        <button onclick="updateStatus(${index})"><i class="fas fa-sync-alt icon"></i>Update Status</button>
+                        <button onclick="deleteFeedback(${index})" style="background-color: #ff6666;"><i class="fas fa-trash-alt icon"></i>Delete</button>
+                    </div>
+                `;
+                feedbackList.appendChild(feedbackDiv);
+            });
+        }
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newFeedback = {
+                projectTitle: document.getElementById('projectTitle').value,
+                description: document.getElementById('feedbackDescription').value,
+                category: document.getElementById('projectCategory').value,
+                status: 'Pending',
+                dateSubmitted: new Date().toLocaleString(),
+                upvotes: 0,
+                downvotes: 0
+            };
+            feedbacks.push(newFeedback);
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            this.reset();
+            displayFeedbacks();
+        });
+
+        function updateStatus(index) {
+            const statuses = ['Pending', 'In Progress', 'Resolved'];
+            const currentStatusIndex = statuses.indexOf(feedbacks[index].status);
+            feedbacks[index].status = statuses[(currentStatusIndex + 1) % statuses.length];
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            displayFeedbacks();
+        }
+
+        function deleteFeedback(index) {
+            feedbacks.splice(index, 1);
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            displayFeedbacks();
+        }
+
+        function vote(index, type) {
+            if (type === 'up') {
+                feedbacks[index].upvotes++;
+            } else {
+                feedbacks[index].downvotes++;
+            }
+            localStorage.setItem('cityFeedbacks', JSON.stringify(feedbacks));
+            displayFeedbacks();
+        }
+
+        document.getElementById('categoryFilter').addEventListener('change', displayFeedbacks);
+        document.getElementById('sortOption').addEventListener('change', displayFeedbacks);
+
+        displayFeedbacks();
+    </script>
+</body>
+</html>

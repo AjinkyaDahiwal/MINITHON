@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Updates</title>
+    <link rel="stylesheet" href="v_style.css"> <!-- Link to external CSS -->
+    
+</head>
+<body>
+<!-- Back Button -->
+
+<h1>Community Updates</h1>
+
+<div class="category" id="ongoing-projects">
+    <h2>Ongoing Projects</h2>
+    <h3>School Construction</h3>
+    <p>A new school is currently under construction to accommodate the growing population in the area.</p>
+    <p><strong>Location:</strong>W, P. G. Kher Marg,32nd Road, Marg, Off Linking Rd, TPS III, Bandra West, Mumbai, Maharashtra 400050</p>
+    
+    <iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/d/embed?mid=1NzMUKlISvvxHQG8Ct9VFm9zKE8VSEvY&ehbc=2E312F"><a href="https://www.gps.ie/">gps devices</a></iframe>
+</div>
+
+<div class="category" id="reported-issues">
+    <h2>Reported Issues</h2>
+    <h3>Potholes on Main Street</h3>
+    <p>Several potholes have been reported on Main Street, causing inconvenience for drivers and pedestrians.</p>
+    <p><strong>Location:</strong>Swami vivekananda road
+    </p>
+    <div style="width: 100%"><iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/d/embed?mid=12tzclCaGo8hf03DCQOKBU04UBvSV1cg&ehbc=2E312F"><a href="https://www.gps.ie/">gps tracker sport</a></iframe></div>
+</div>
+
+<div class="category" id="local-events">
+    <h2>Local Events</h2>
+    <h3>Community Clean-Up Day</h3>
+    <p>Join us for a community clean-up day to beautify our local parks.</p>
+    <p><strong>Location:</strong>Juhu Beach</p>
+    <iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Juhu%20Beach,%20Silver%20Beach%202,%20JVPD%20Scheme,%20Juhu,%20Mumbai,%20Maharashtra%20400049+()&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/">gps trackers</a></iframe>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+// GSAP Animation
+gsap.from(".category", { 
+    duration: 0.5, 
+    opacity: 0, 
+    y: 20, 
+    stagger: 0.2 
+});
+
+  document.getElementById("back-button").addEventListener("click", function() {
+    window.location.href = "../index.html";
+  });
+
+
+</script>
+
+</body>
+</html>
+
